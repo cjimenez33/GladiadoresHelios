@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campeonato de Tenis</title>
+</head>
+<body>
+
+<h1>Campeonato de Tenis</h1>
+
+<div id="partidos">
+    <!-- Aquí se mostrarán los partidos -->
+</div>
+
+<script>
+// Array para almacenar los participantes del campeonato
+let participantes = [];
+
+// Generar los nombres de los participantes (por ejemplo, A, B, C, ...)
+for (let i = 0; i < 32; i++) {
+    participantes.push(String.fromCharCode(65 + i));
+}
+
+// Función para generar los partidos del campeonato
+function generarPartidos() {
+    let partidosHTML = '';
+
+    for (let i = 0; i < participantes.length; i += 2) {
+        let jugador1 = participantes[i];
+        let jugador2 = participantes[i + 1];
+
+        partidosHTML += `
+            <div>
+                <span>${jugador1}</span> vs <span>${jugador2}</span>
+                <input type="number" min="0" max="2" value="0" id="setJugador1_${i}"> -
+                <input type="number" min="0" max="2" value="0" id="setJugador2_${i}">
+                <button onclick="registrarResultado(${i})">Registrar Resultado</button>
+            </div>
+        `;
+    }
+
+    document.getElementById('partidos').innerHTML = partidosHTML;
+}
+
+// Función para registrar el resultado de un partido
+function registrarResultado(index) {
+    let setJugador1 = parseInt(document.getElementById(`setJugador1_${index}`).value);
+    let setJugador2 = parseInt(document.getElementById(`setJugador2_${index}`).value);
+
+    if (setJugador1 >= 0 && setJugador1 <= 2 && setJugador2 >= 0 && setJugador2 <= 2) {
+        if (setJugador1 === 2 || setJugador2 === 2) {
+            alert('El partido debe ser al mejor de 3 sets.');
+        } else {
+            // Aquí puedes realizar acciones con los resultados, como almacenarlos en una base de datos, calcular el ganador, etc.
+            alert(`Resultado registrado: ${participantes[index]} ${setJugador1}-${setJugador2} ${participantes[index + 1]}`);
+        }
+    } else {
+        alert('Ingresa un número válido de sets (0, 1 o 2).');
+    }
+}
+
+// Generar los partidos al cargar la página
+window.onload = function() {
+    generarPartidos();
+};
+</script>
+
+</body>
+</html>
