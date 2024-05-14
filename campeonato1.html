@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campeonato de Tenis</title>
+<style>
+/* Estilos CSS */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.partido {
+    margin-bottom: 30px;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.set-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.set-container input {
+    width: calc(50% - 5px);
+    padding: 8px;
+    text-align: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+.resultados {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.resultados h2 {
+    margin-bottom: 10px;
+}
+
+.resultados div {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Campeonato de Tenis</h1>
+
+    <!-- Formulario para ingresar resultados -->
+    <form id="formResultados">
+        <!-- Partido 1 -->
+        <div class="partido">
+            <div class="label">Partido 1:</div>
+            <div class="set-container">
+                <input type="number" id="set1_jugador1" class="set" placeholder="Juegos ganados por Jugador 1">
+                <span>-</span>
+                <input type="number" id="set1_jugador2" class="set" placeholder="Juegos ganados por Jugador 2">
+            </div>
+            <div class="set-container">
+                <input type="number" id="set2_jugador1" class="set" placeholder="Juegos ganados por Jugador 1">
+                <span>-</span>
+                <input type="number" id="set2_jugador2" class="set" placeholder="Juegos ganados por Jugador 2">
+            </div>
+            <div class="set-container">
+                <input type="number" id="set3_jugador1" class="set" placeholder="Juegos ganados por Jugador 1">
+                <span>-</span>
+                <input type="number" id="set3_jugador2" class="set" placeholder="Juegos ganados por Jugador 2">
+            </div>
+            <div class="ganador" id="ganador_1"></div>
+        </div>
+        <!-- Repetir estos bloques para los 31 partidos restantes -->
+
+        <button type="submit" class="btn">Guardar Resultados</button>
+    </form>
+
+    <!-- Sección para mostrar los resultados -->
+    <div class="resultados" id="tablaResultados">
+        <!-- Los resultados se mostrarán aquí -->
+    </div>
+</div>
+
+<script>
+// Evento para guardar los resultados cuando se envía el formulario
+document.getElementById("formResultados").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+    // Array para almacenar los resultados
+    let resultados = [];
+
+    // Iterar sobre los campos de resultados y guardarlos en el array
+    let sets = document.getElementsByClassName("set");
+    for (let i = 0; i < sets.length; i += 2) {
+        let juegosJugador1 = parseInt(sets[i].value.trim());
+        let juegosJugador2 = parseInt(sets[i + 1].value.trim());
+        resultados.push({ "juegosJugador1": juegosJugador1, "juegosJugador2": juegosJugador2 });
+    }
+
+    // Mostrar los resultados y al ganador
+    mostrarResultados(resultados);
+});
+
+// Función para mostrar los resultados y al ganador
+function mostrarResultados(resultados) {
+    let tablaResultados = document.getElementById("tablaResultados");
+    tablaResultados.innerHTML = "<h2>Resultados</h2>";
+
+    // Iterar sobre los resultados y mostrarlos en la tabla
+    for (let i = 0; i < resultados.length; i++) {
+        let partido = resultados[i];
+        let resultadoPartido = `<div><strong>Partido ${i + 1}:</strong> `;
+        resultadoPartido += `Jugador 1: ${partido.juegosJugador1}, Jugador 2: ${partido.juegosJugador2}</div>`;
+        tablaResultados.innerHTML += resultadoPartido;
+
+        // Determinar al ganador del partido
+        let ganador = (partido.juegosJugador1 > partido.juegosJugador2) ? "Jugador 1" : "Jugador 2";
+        document.getElementById(`ganador_${i + 1}`).textContent = `Ganador: ${ganador}`;
+    }
+}
+</script>
+
+</body>
+</html>
